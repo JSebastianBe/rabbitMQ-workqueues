@@ -19,8 +19,6 @@ public class Evento {
 
     @Override
     public String toString() {
-        return "empleado='" + empleado + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", fecha_hora='" + fecha_hora + '\'';
+        return nombre + "|" + empleado  + "|" + fecha_hora;
     }
 }

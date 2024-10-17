@@ -1,5 +1,6 @@
 package co.vinni;
 
+import co.jsbm.ManejaArchivo;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -32,7 +33,7 @@ public class Receiver {
 
             System.out.println(" [\" + EVENT_QUEUE_NAME + \"] recibido '" + message + "'");
             try {
-                doWork(message);
+                guardarEvento(message);
             } finally {
                 System.out.println(" [x] Echo!");
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
@@ -89,6 +90,16 @@ public class Receiver {
                     Thread.currentThread().interrupt();
                 }
             }
+        }
+    }
+
+    public static void guardarEvento(String mensaje) {
+        try {
+            ManejaArchivo ma = new ManejaArchivo("bd.txt");
+            ma.setMensaje(mensaje);
+            ma.Save();
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
