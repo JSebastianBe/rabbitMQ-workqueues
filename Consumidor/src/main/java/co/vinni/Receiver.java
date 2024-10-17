@@ -12,8 +12,35 @@ import java.util.concurrent.TimeoutException;
 public class Receiver {
     private final static String QUEUE_NAME = "topic_sms";
     private static final String TASK_QUEUE_NAME = "task_queue";
+    private final static String EVENT_QUEUE_NAME = "event_queue";
 
     private final static String server = "127.0.0.1";
+
+    public static void receiveEvent() throws IOException, TimeoutException {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(server);
+        final Connection connection = factory.newConnection();
+        final Channel channel = connection.createChannel();
+
+        channel.queueDeclare(EVENT_QUEUE_NAME, true, false, false, null);
+        System.out.println(" [" + EVENT_QUEUE_NAME + "] Waiting for messages. To exit press CTRL+C");
+
+        channel.basicQos(1);
+
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String message = new String(delivery.getBody(), "UTF-8");
+
+            System.out.println(" [\" + EVENT_QUEUE_NAME + \"] Received '" + message + "'");
+            try {
+                doWork(message);
+            } finally {
+                System.out.println(" [x] Done");
+                channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+            }
+        };
+        channel.basicConsume(EVENT_QUEUE_NAME, false, deliverCallback, consumerTag -> { });
+    }
+
     public static void receive() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
@@ -34,7 +61,6 @@ public class Receiver {
         factory.setHost(server);
         final Connection connection = factory.newConnection();
         final Channel channel = connection.createChannel();
-
 
         channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
