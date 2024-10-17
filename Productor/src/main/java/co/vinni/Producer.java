@@ -1,5 +1,6 @@
 package co.vinni;
 
+import co.jsbm.Evento;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -15,16 +16,16 @@ public class Producer {
     private final static String EVENT_QUEUE_NAME = "event_queue";
     private final static String server = "127.0.0.1";
 
-    public static void sendEvent(String message) throws IOException, TimeoutException {
+    public static void sendEvent(Evento event) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(server);
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            channel.queueDeclare(EVENT_QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(EVENT_QUEUE_NAME, true, false, false, null);
             channel.basicPublish("", EVENT_QUEUE_NAME,
                     MessageProperties.PERSISTENT_TEXT_PLAIN,
-                    message.getBytes(StandardCharsets.UTF_8));
-            System.out.println(" [" + EVENT_QUEUE_NAME + "] Envíado '" + message + "'");
+                    event.toString().getBytes(StandardCharsets.UTF_8));
+            System.out.println(" [" + EVENT_QUEUE_NAME + "] Envíado '" + event.toString() + "'");
         }
     }
 

@@ -23,18 +23,18 @@ public class Receiver {
         final Channel channel = connection.createChannel();
 
         channel.queueDeclare(EVENT_QUEUE_NAME, true, false, false, null);
-        System.out.println(" [" + EVENT_QUEUE_NAME + "] Waiting for messages. To exit press CTRL+C");
+        System.out.println(" [" + EVENT_QUEUE_NAME + "] Esperando peticiones. To exit press CTRL+C");
 
         channel.basicQos(1);
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
 
-            System.out.println(" [\" + EVENT_QUEUE_NAME + \"] Received '" + message + "'");
+            System.out.println(" [\" + EVENT_QUEUE_NAME + \"] recibido '" + message + "'");
             try {
                 doWork(message);
             } finally {
-                System.out.println(" [x] Done");
+                System.out.println(" [x] Echo!");
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             }
         };
