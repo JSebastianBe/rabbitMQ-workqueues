@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApiEventosApplication {
 
-	EventsManage em;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ApiEventosApplication.class, args);
 	}
 
 	public Respuesta sendMessage(Evento mensaje) {
+		EventsManage em = new EventsManage();
 		em.sentEvent(mensaje);
 		return new Respuesta("La petición fue enviada",false);
 	}

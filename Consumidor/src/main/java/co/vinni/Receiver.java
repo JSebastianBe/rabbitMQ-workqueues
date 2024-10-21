@@ -1,6 +1,7 @@
 package co.vinni;
 
 import co.jsbm.ManejaArchivo;
+import co.vinni.colaEventos.EventsManage;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -14,7 +15,6 @@ public class Receiver {
     private final static String QUEUE_NAME = "topic_sms";
     private static final String TASK_QUEUE_NAME = "task_queue";
     private final static String EVENT_QUEUE_NAME = "event_queue";
-
     private final static String server = "127.0.0.1";
 
     public static void receiveEvent() throws IOException, TimeoutException {
@@ -31,11 +31,14 @@ public class Receiver {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
 
-            System.out.println(" [\" + EVENT_QUEUE_NAME + \"] recibido '" + message + "'");
+            System.out.println(" [" + EVENT_QUEUE_NAME + "] recibido '" + message + "'");
             try {
                 guardarEvento(message);
-            } finally {
-                System.out.println(" [x] Echo!");
+            }catch (Exception e)
+            {
+                System.err.println("Error");
+            }
+            finally {
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             }
         };
@@ -98,6 +101,13 @@ public class Receiver {
             ManejaArchivo ma = new ManejaArchivo("bd.txt");
             ma.setMensaje(mensaje);
             ma.Save();
+            if(ma.isError()){
+                EventsManage em = new EventsManage();
+                System.err.println(" [" + EVENT_QUEUE_NAME + "] Error -> " + ma.getRespuesta());
+                em.sentEventString(mensaje);
+            }else{
+                System.out.println(" [" + EVENT_QUEUE_NAME + "] Echo!");
+            }
         } catch (Exception e) {
             Thread.currentThread().interrupt();
         }
