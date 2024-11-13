@@ -1,5 +1,7 @@
 package co.jsbm;
 
+import java.sql.Timestamp;
+
 public class Evento {
     private String empleado;
     private String nombre;
@@ -15,6 +17,18 @@ public class Evento {
 
     public String getEmpleado() {
         return empleado;
+    }
+
+    public void setEmpleado(String empleado) {
+        this.empleado = empleado;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setFecha_hora(String fecha_hora) {
+        this.fecha_hora = fecha_hora;
     }
 
     @Override

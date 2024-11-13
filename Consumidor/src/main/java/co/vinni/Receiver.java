@@ -1,5 +1,6 @@
 package co.vinni;
 
+import co.jsbm.InsertaBD;
 import co.jsbm.ManejaArchivo;
 import co.vinni.colaEventos.EventsManage;
 import com.rabbitmq.client.Channel;
@@ -97,6 +98,28 @@ public class Receiver {
     }
 
     public static void guardarEvento(String mensaje) {
+        Archivo(mensaje);
+        BD(mensaje);
+    }
+
+    private static void BD(String mensaje) {
+        try {
+            InsertaBD ib = new InsertaBD();
+            ib.setMensaje(mensaje);
+            ib.Save();
+            if(ib.isError()){
+                EventsManage em = new EventsManage();
+                System.err.println(" [" + EVENT_QUEUE_NAME + "] Error -> " + ib.getRespuesta());
+                em.sentEventString(mensaje);
+            }else{
+                System.out.println(" [" + EVENT_QUEUE_NAME + "] Echo!");
+            }
+        } catch (Exception e) {
+            //Thread.currentThread().interrupt();
+        }
+    }
+
+    private static void Archivo(String mensaje) {
         try {
             ManejaArchivo ma = new ManejaArchivo("bd.txt");
             ma.setMensaje(mensaje);
