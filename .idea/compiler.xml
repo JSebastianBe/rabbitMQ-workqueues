@@ -8,13 +8,19 @@
         <outputRelativeToContentRoot value="true" />
         <module name="apiEventos" />
         <module name="Productor" />
+        <module name="apiConsEventos" />
         <module name="Consumidor" />
         <module name="Modelo" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ApiConsultaEventos" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ApiConsultaEventos" options="-parameters" />
+      <module name="apiConsEventos" options="-parameters" />
       <module name="apiEventos" options="-parameters" />
     </option>
   </component>

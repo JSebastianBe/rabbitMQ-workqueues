@@ -8,7 +8,14 @@
         <option value="$PROJECT_DIR$/Consumidor/pom.xml" />
         <option value="$PROJECT_DIR$/ApiEvents/pom.xml" />
         <option value="$PROJECT_DIR$/Modelo/pom.xml" />
+        <option value="$PROJECT_DIR$/ApiConsultaEventos/pom.xml" />
+        <option value="$PROJECT_DIR$/ApiConsEvents/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/ApiConsultaEventos/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-22" project-jdk-type="JavaSDK">

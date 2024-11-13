@@ -25,18 +25,6 @@
             <version>1.7.36</version>
         </dependency>
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>Modelo</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>co.jsbm</groupId>
-            <artifactId>Modelo</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>co.jsbm</groupId>
             <artifactId>Modelo</artifactId>
             <version>1.0-SNAPSHOT</version>

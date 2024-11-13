@@ -18,9 +18,9 @@ public class InsertaBD {
     private Evento ev;
 
     // Datos de conexión a PostgreSQL
-    private String url = "jdbc:postgresql://localhost:5432/postgres";
-    private String user = "postgres";
-    private String password = "123456";
+    private final String url = "jdbc:postgresql://localhost:5432/postgres";
+    private final String user = "postgres";
+    private final String password = "123456";
 
     public InsertaBD() {
         this.error = false;
@@ -52,12 +52,10 @@ public class InsertaBD {
         String sql = "INSERT INTO public.evento (empleado, nombre, fecha_hora) VALUES (?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            // Establece los valores para cada parámetro
             pstmt.setString(1, this.ev.getEmpleado());
             pstmt.setString(2, this.ev.getNombre());
             pstmt.setString(3, this.ev.getFecha_hora());
 
-            // Ejecuta la consulta de inserción
             int filasInsertadas = pstmt.executeUpdate();
             if (filasInsertadas > 0) {
                 this.error = false;
