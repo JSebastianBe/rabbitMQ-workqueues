@@ -1,6 +1,7 @@
 package co.vinni;
 
-import co.jsbm.InsertaBD;
+import co.jsbm.InsertaBDMongo;
+import co.jsbm.InsertaBDPostgreSql;
 import co.jsbm.ManejaArchivo;
 import co.vinni.colaEventos.EventsManage;
 import com.rabbitmq.client.Channel;
@@ -98,13 +99,14 @@ public class Receiver {
     }
 
     public static void guardarEvento(String mensaje) {
-        Archivo(mensaje);
-        BD(mensaje);
+        //Archivo(mensaje);
+        BDPostgreSql(mensaje);
+        BDMongo(mensaje);
     }
 
-    private static void BD(String mensaje) {
+    private static void BDMongo(String mensaje) {
         try {
-            InsertaBD ib = new InsertaBD();
+            InsertaBDMongo ib = new InsertaBDMongo();
             ib.setMensaje(mensaje);
             ib.Save();
             if(ib.isError()){
@@ -115,7 +117,24 @@ public class Receiver {
                 System.out.println(" [" + EVENT_QUEUE_NAME + "] Echo!");
             }
         } catch (Exception e) {
-            //Thread.currentThread().interrupt();
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private static void BDPostgreSql(String mensaje) {
+        try {
+            InsertaBDPostgreSql ib = new InsertaBDPostgreSql();
+            ib.setMensaje(mensaje);
+            ib.Save();
+            if(ib.isError()){
+                EventsManage em = new EventsManage();
+                System.err.println(" [" + EVENT_QUEUE_NAME + "] Error -> " + ib.getRespuesta());
+                em.sentEventString(mensaje);
+            }else{
+                System.out.println(" [" + EVENT_QUEUE_NAME + "] Echo!");
+            }
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
         }
     }
 

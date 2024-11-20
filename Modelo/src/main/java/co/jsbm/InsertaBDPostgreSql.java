@@ -1,16 +1,11 @@
 package co.jsbm;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class InsertaBD {
+public class InsertaBDPostgreSql {
 
     private String mensaje;
     private String respuesta;
@@ -22,11 +17,11 @@ public class InsertaBD {
     private final String user = "postgres";
     private final String password = "123456";
 
-    public InsertaBD() {
+    public InsertaBDPostgreSql() {
         this.error = false;
     }
 
-    public InsertaBD(String mensaje) {
+    public InsertaBDPostgreSql(String mensaje) {
         this.mensaje = mensaje;
         this.error = false;
     }
@@ -59,12 +54,12 @@ public class InsertaBD {
             int filasInsertadas = pstmt.executeUpdate();
             if (filasInsertadas > 0) {
                 this.error = false;
-                System.out.println("Inserción exitosa.");
+                this.respuesta = "Inserción exitosa.";
             }
 
         } catch (SQLException e) {
             this.error = true;
-            this.respuesta = "Ocurrió un error en la escritura de la base de datos: " + e.getMessage();
+            this.respuesta = "Ocurrió un error en la escritura en PostgreSql: " + e.getMessage();
         }
     }
 }

@@ -45,7 +45,7 @@ public class ManejaArchivo {
             LocalDateTime ahora = LocalDateTime.now();
             String fechaHoraFormateada = ahora.format(formatter);
             Random random = new Random();
-            int num = random.nextInt(5);
+            int num = 1; //random.nextInt(5);
             if(num != 0){
                 escritor.write(fechaHoraFormateada + " -> " + this.mensaje + System.lineSeparator());
                 this.respuesta = "Mensaje guardado";
